@@ -18,6 +18,8 @@ var Cookies = require('cookies');
 // 创建app应用 等同于 NodeJS Http.createServer();
 var app = express();
 
+var User = require('./models/User');
+
 /**
 * 设置静态文件托管
 * 当访问的url以/public开始，那么直接返回对应的 __dirname + '/public'下的文件
@@ -55,6 +57,28 @@ swig.setDefaults({cache: false});
 */
 app.use( bodyParser.urlencoded({extended : true}) );
 
+// 设置cookie
+app.use(function(req,res,next) {
+    req.cookies = new Cookies(req,res);
+    // 解析登录用户的cookie信息
+    req.userInfo = {};
+    if(req.cookies.get('userInfo')) {
+        try {
+            req.userInfo = JSON.parse(req.cookies.get('userInfo'));
+            // 获取当前登陆用户的类型
+            User.findById(req.userInfo._id).then(function(userInfo) {
+                req.userInfo.isAdmin = Boolean(userInfo.isAdmin);
+                next();
+            })
+        } catch(e) {
+            next();
+        }
+    } else {
+        next();
+    }
+
+})
+
 /**
  * 根据不同的功能划分模块
  */
@@ -63,15 +87,14 @@ app.use('/api', require('./routers/api'));
 app.use('/', require('./routers/main'));
 
 
-mongoose.connect('mongodb://localhost:27018/Blog',{useMongoClient: true},function(err) {
+mongoose.connect('mongodb://localhost:27018/blog',function(err) {
     if(err) {
         console.log('数据库连接失败');
     } else {
         console.log('数据库连接成功');
-        app.listen('8082');
+        app.listen(8082);
     }
 });
-
 
 // 用户发送http请求 -> url -> 解析路由 -> 找到匹配的规则 -> 执行指定的绑定的函数，返回对应内容至用户
 

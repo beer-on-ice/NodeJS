@@ -59,11 +59,9 @@ $(function() {
             },
             dataType: 'json',
             success: function(result) {
-
                 $loginBox.find('.colWarning').html(result.message);
 
                 if (!result.code) {
-                    //登录成功
                     window.location.reload();
                 }
             }
@@ -71,7 +69,7 @@ $(function() {
     })
 
     //退出
-    $('#logout').on('click', function() {
+    $('#logoutBtn').on('click', function() {
         $.ajax({
             url: '/api/user/logout',
             success: function(result) {
