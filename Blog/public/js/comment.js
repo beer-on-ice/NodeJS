@@ -43,7 +43,7 @@ $('.pager').delegate('a', 'click', function() {
 });
 
 function renderComment() {
-
+    // 评论总条数
     $('#messageCount').html(comments.length);
 
     pages = Math.max(Math.ceil(comments.length / prepage), 1);
