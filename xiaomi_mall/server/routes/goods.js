@@ -1,32 +1,81 @@
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
-var Goods = require('../models/goods');
+let express = require('express');
+let router = express.Router();
+let mongoose = require('mongoose');
+let Goods = require('../models/goods');
+let User = require('../models/users');
 
+var responseData;
 
-// 连接mongodb数据库
-mongoose.connect('mongodb://127.0.0.1:27017/mall');
+router.use(function(req, res, next) {
+    //路由，类似于java中的拦截器功能，在请求到达后台之前，先在这里处理。
+    responseData = {
+        status: 0,
+        msg: ''
+    }
+    next(); //next的作用是将请求转发，这个必须有，如果没有，请求到这就挂起了。
+})
 
-mongoose.connection.on("connected",function() {
-    console.log('MongoDB connected success.')
-});
-mongoose.connection.on("error",function() {
-    console.log('MongoDB connected fail.')
-});
-mongoose.connection.on("disconnected",function() {
-    console.log('MongoDB disconnected.')
-});
-
+//  首页商品列表
 router.get('/', function(req, res, next) {
-    Goods.find().then(function(doc) {
-        res.json({
-            status: '0',
-            msg: '',
-            result: {
-                'count': doc.length,
-                'list': doc
+    // 排序
+    let sorts = Number(req.query.sorts || 1);
+    let page = Number(req.query.page || 1);
+    let pageSize = Number(req.query.pageSize || 5);
+    let priceLevel = req.query.priceLevel;
+    let skip = (page - 1) * pageSize;
+    let priceGt = '';
+    let priceLt = '';
+    let param = {};
+
+    if(priceLevel !== 'all') {
+        switch(priceLevel) {
+            case '0': priceGt = 0; priceLt = 100;break;
+            case '1': priceGt = 100; priceLt = 500;break;
+            case '2': priceGt = 500; priceLt = 1500;break;
+            case '3': priceGt = 1500; priceLt = 3000;break;
+            case '4': priceGt = 3000; priceLt = 4500;break;
+        }
+        param = {
+            salePrice: {
+                $gt: priceGt,
+                $lte: priceLt
             }
-        })
+        }
+    }
+    let goodsModel = Goods.find(param).limit(pageSize).skip(skip).sort({'salePrice': sorts});
+
+    goodsModel.exec().then(function(doc) {
+        responseData.status = 0;
+        responseData.msg = '';
+        responseData.result = {'count': doc.length,'list': doc}
+        res.json(responseData)
+    })
+});
+
+// 加入购物车
+router.post('/addCart',function(req,res,next) {
+    let userId = '001';
+    let productId = req.body.productId;
+    User.find().then((doc)=> {
+        console.log(doc);
+    })
+    User.findOne({userId: userId}).then(function(doc) {
+        console.log(doc);
+        if(doc) {
+            Goods.findOne({productId: productId}).then((doc1)=> {
+                if(doc) {
+                    doc1.productNum = 1;
+                    doc1.checked = 1;
+                    doc1.cartList.push(doc1);
+                    doc1.save().then((doc2)=> {
+                        responseData.status = 0;
+                        responseData.msg = '';
+                        responseData.result = 'success'
+                        res.json(responseData);
+                    })
+                }
+            });
+        }
     })
 });
 

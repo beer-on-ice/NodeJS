@@ -1,99 +1,113 @@
 [{
       "productId": "201805001",
       "productName": "平衡车",
-      "salePrice": "1999",
+      "salePrice": 1999,
       "productImage": "pingheng.jpg",
       "productUrl": ""
     },
     {
       "productId": "201805002",
       "productName": "头戴式耳机-3",
-      "salePrice": "80",
+      "salePrice": 80,
       "productImage": "2.jpg",
       "productUrl": ""
     },
     {
       "productId": "201805003",
       "productName": "小米笔记本",
-      "salePrice": "3549",
+      "salePrice": 3549,
       "productImage": "note.jpg",
       "productUrl": ""
     },
     {
       "productId": "201805004",
       "productName": "小钢炮",
-      "salePrice": "129",
+      "salePrice": 129,
       "productImage": "1.jpg",
       "productUrl": ""
     },
     {
       "productId": "201805005",
       "productName": "智能摄像机",
-      "salePrice": "389",
+      "salePrice": 389,
       "productImage": "photo.jpg",
       "productUrl": ""
     },
     {
       "productId": "201805006",
       "productName": "Ear2000",
-      "salePrice": "2000",
+      "salePrice": 2000,
       "productImage": "13.jpg",
       "productUrl": ""
     },
     {
       "productId": "201805007",
       "productName": "电饭煲",
-      "salePrice": "999",
+      "salePrice": 999,
       "productImage": "9.jpg",
       "productUrl": ""
     },
     {
       "productId": "201805008",
       "productName": "Ear1000",
-      "salePrice": "1000",
+      "salePrice": 1000,
       "productImage": "11.jpg",
       "productUrl": ""
     },
     {
       "productId": "201805009",
       "productName": "Ear1600",
-      "salePrice": "1600",
+      "salePrice": 1600,
       "productImage": "14.jpg",
       "productUrl": ""
     },
     {
       "productId": "201805010",
       "productName": "LEME-R",
-      "salePrice": "200",
+      "salePrice": 2000,
       "productImage": "3.jpg",
       "productUrl": ""
     },
     {
       "productId": "201805011",
       "productName": "LEME-B",
-      "salePrice": "200",
+      "salePrice": 2050,
       "productImage": "4.jpg",
       "productUrl": ""
     },
     {
       "productId": "201805012",
       "productName": "LETV",
-      "salePrice": "350",
+      "salePrice": 350,
       "productImage": "5.jpg",
       "productUrl": ""
     },
     {
       "productId": "201805013",
-      "productName": "paicha",
-      "salePrice": "50",
+      "productName": "排插",
+      "salePrice": 50,
       "productImage": "6.jpg",
       "productUrl": ""
     },
     {
       "productId": "201805014",
-      "productName": "jinghuaqi",
-      "salePrice": "2399",
+      "productName": "净化器",
+      "salePrice": 2399,
       "productImage": "8.jpg",
+      "productUrl": ""
+    },
+    {
+      "productId": "201805015",
+      "productName": "小米电视",
+      "salePrice": 3299,
+      "productImage": "10.jpg",
+      "productUrl": ""
+    },
+    {
+      "productId": "201805016",
+      "productName": "数据线",
+      "salePrice": 15,
+      "productImage": "15.jpg",
       "productUrl": ""
     }
   ]

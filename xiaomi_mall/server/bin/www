@@ -7,6 +7,8 @@
 var app = require('../app');
 var debug = require('debug')('server:server');
 var http = require('http');
+var mongoose = require('mongoose');
+
 
 /**
  * Get port from environment and store in Express.
@@ -18,16 +20,23 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
+ // 连接mongodb数据库
+ var server;
+ mongoose.connect('mongodb://127.0.0.1:27017/mall',function(err) {
+     if(err) {
+         console.log('数据库连接失败');
+     } else {
+         console.log('数据库连接成功');
+         server = http.createServer(app);
+         /**
+         * Listen on provided port, on all network interfaces.
+         */
+         server.listen(port);
+         server.on('error', onError);
+         server.on('listening', onListening);
+     }
+ });
 
-var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.

@@ -405,6 +405,20 @@
   flex: 1;
 }
 
+.accessory-result .accessory-list-wrap ul::after {
+  clear:both;
+  content: '';
+  height:0;
+  visibility: hidden;
+  display: block;
+}
+.accessory-result .accessory-list-wrap .loadMore {
+    height: 100px;
+    line-height: 100px;
+    text-align:center;
+}
+
+
 .filter-nav {
   height: 55px;
   line-height: 55px;
