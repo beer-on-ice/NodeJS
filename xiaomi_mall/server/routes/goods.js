@@ -2,7 +2,7 @@ let express = require('express');
 let router = express.Router();
 let mongoose = require('mongoose');
 let Goods = require('../models/goods');
-let User = require('../models/users');
+let Users = require('../models/users');
 
 var responseData;
 
@@ -54,20 +54,33 @@ router.get('/', function(req, res, next) {
 
 // 加入购物车
 router.post('/addCart',function(req,res,next) {
-    let userId = '001';
+    let userId = '003';
     let productId = req.body.productId;
-    User.find().then((doc)=> {
-        console.log(doc);
-    })
-    User.findOne({userId: userId}).then(function(doc) {
-        console.log(doc);
-        if(doc) {
-            Goods.findOne({productId: productId}).then((doc1)=> {
-                if(doc) {
-                    doc1.productNum = 1;
-                    doc1.checked = 1;
-                    doc1.cartList.push(doc1);
-                    doc1.save().then((doc2)=> {
+    // 找到用户
+    Users.findOne({userId: userId}).then(function(userDoc) {
+        if(userDoc) {
+            let goodsItem = '';
+            userDoc.cartList.forEach(function(item) {
+                if(item.productId == productId) {
+                    goodsItem = item;
+                    item.productNum ++;
+                }
+            });
+            if(goodsItem) {
+                userDoc.save().then((doc2)=> {
+                    responseData.status = 0;
+                    responseData.msg = '';
+                    responseData.result = 'success'
+                    res.json(responseData);
+                })
+            }
+            else {
+                Goods.findOne({productId: productId}).then((productDoc)=> {
+                if(productDoc) {
+                    productDoc.productNum = 1;
+                    productDoc.checked = 1;
+                    userDoc.cartList.push(productDoc);
+                    userDoc.save().then((doc2)=> {
                         responseData.status = 0;
                         responseData.msg = '';
                         responseData.result = 'success'
@@ -75,6 +88,8 @@ router.post('/addCart',function(req,res,next) {
                     })
                 }
             });
+            }
+            // 找到点击的商品
         }
     })
 });

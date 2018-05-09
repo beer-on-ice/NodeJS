@@ -17,6 +17,7 @@ var userSchema = new Schema({
         }
     ],
     "addressList": Array
-});
+},{"collection": "user"});
+// mongodb会给集合名默认加 ‘s’, 使用{collection:user}解决 
 
 module.exports = mongoose.model('User',userSchema);

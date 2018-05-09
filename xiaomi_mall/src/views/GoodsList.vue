@@ -161,7 +161,7 @@ export default {
 			axios({
 				method: 'POST',
 				url: '/api/goods/addCart',
-				params: {productId:id}
+				data: {productId:id}
 			}).then((res)=>{
 				console.log(res);
 			})

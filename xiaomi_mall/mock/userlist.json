@@ -1,0 +1,17 @@
+{
+    "userId": "003",
+    "userName": "zmouse",
+    "userPwd": "567",
+    "orderList": [],
+    "cartList": [
+        {
+            "productId": "201805003",
+            "productName": "小米笔记本",
+            "salePrice":"3549",
+            "productImage": "note.jpg",
+            "checked": "1",
+            "productNum":"1"
+        }
+    ],
+    "addressList": []
+}
