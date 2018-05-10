@@ -16,7 +16,7 @@ router.use(function(req, res, next) {
 })
 
 //  首页商品列表
-router.get('/', function(req, res, next) {
+router.get('/list', function(req, res, next) {
     // 排序
     let sorts = Number(req.query.sorts || 1);
     let page = Number(req.query.page || 1);
@@ -77,8 +77,8 @@ router.post('/addCart',function(req,res,next) {
             else {
                 Goods.findOne({productId: productId}).then((productDoc)=> {
                 if(productDoc) {
-                    productDoc.productNum = 1;
-                    productDoc.checked = 1;
+                    productDoc.productNum = "1";
+                    productDoc.checked = "1";
                     userDoc.cartList.push(productDoc);
                     userDoc.save().then((doc2)=> {
                         responseData.status = 0;

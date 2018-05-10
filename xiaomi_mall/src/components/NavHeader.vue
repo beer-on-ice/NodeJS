@@ -29,8 +29,8 @@
 		<div class="navbar-right-container" style="display: flex;">
 			<div class="navbar-menu-container">
 				<span class="navbar-link" v-text="nickName" v-if="nickName"></span>
-				<a href="javascript:void(0)" class="navbar-link" @click="loginModalFlag=true">Login</a>
-				<a href="javascript:void(0)" class="navbar-link" @click="logout">Logout</a>
+				<a href="javascript:void(0)" class="navbar-link" @click="loginModalFlag=true" v-if="!nickName">Login</a>
+				<a href="javascript:void(0)" class="navbar-link" @click="logout" v-else>Logout</a>
 				<div class="navbar-cart-container">
 					<span class="navbar-cart-count"></span>
 					<a class="navbar-link navbar-cart-link" href="/#/cart">
@@ -72,7 +72,8 @@
                             name="password"
                             class="regi_login_input regi_login_input_left login-input-no input_text"
                             placeholder="Password"
-                            v-model="userPwd">
+                            v-model="userPwd"
+							@keyup.enter="login">
 						</li>
 					</ul>
 				</div>
@@ -101,7 +102,22 @@
             }
     	},
     	created() {},
+		mounted() {
+			this.checkLogin();
+		},
     	methods: {
+			checkLogin() {
+				let _this = this;
+				axios({
+					methods:"GET",
+					url:"/api/users/checkLogin"
+				}).then((res)=>{
+					let response = res.data;
+					if(response.status == "0") {
+						_this.nickName = response.result.userName;
+					}
+				})
+			},
             login() {
                 let _this = this;
                 axios({

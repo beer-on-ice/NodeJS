@@ -2,14 +2,14 @@
 	<div>
 		<nav-header></nav-header>
 		<nav-bread>
-			<span slot>123</span>
+			<span slot>Goods</span>
 		</nav-bread>
 		<div class="accessory-result-page accessory-page">
 			<div class="container">
 				<div class="filter-nav">
 					<span class="sortby">Sort by:</span>
 					<a href="javascript:void(0)" class="default cur">Default</a>
-					<a href="javascript:void(0)" class="price" @click="sortGoods">Price <svg class="icon icon-arrow-short"><use xlink:href="#icon-arrow-short"></use></svg></a>
+						<a href="javascript:void(0)" class="price" @click="sortGoods">Price <svg class="icon icon-arrow-short" :class="{'sort-up':sortFlag}"><use xlink:href="#icon-arrow-short"></use></svg></a>
 					<a href="javascript:void(0)" class="filterby stopPop" @click="show_filter_pop">Filter by</a>
 				</div>
 				<div class="accessory-result">
@@ -50,6 +50,26 @@
 			</div>
 		</div>
 		<div class="md-overlay" v-show="priceOverLay" @click.stop="closePop"></div>
+		<modal :md-show="mdShow" @close="closeModal">
+			<p slot="message">
+				请先登录，否则无法加入到购物车！
+			</p>
+			<div slot="btnGroup">
+				<a class="btn btn--m" href="javascript:;" @click="mdShow=false">关闭</a>
+			</div>
+		</modal>
+		<modal :md-show="mdShowCart" @close="closeModal">
+			<p slot="message">
+				<svg class="icon-status-ok">
+				  <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-status-ok"></use>
+				</svg>
+				<span>加入购物车成功！</span>
+			</p>
+			<div slot="btnGroup">
+				<a class="btn btn--m" href="javascript:;" @click="mdShowCart=false">继续购物</a>
+				<router-link class="btn btn--m" href="javascript:;" to="/cart">查看购物车</router-link>
+			</div>
+		</modal>
 		<nav-footer></nav-footer>
 	</div>
 </template>
@@ -61,6 +81,7 @@ import '@/assets/css/product.css'
 import NavHeader from '@/components/NavHeader'
 import NavFooter from '@/components/NavFooter'
 import NavBread from '@/components/NavBread'
+import Modal from '@/components/Modal'
 
 export default {
 	data() {
@@ -94,7 +115,9 @@ export default {
 			page: 1,
 			pageSize: 8,
 			busy: true, // 为Ture不能加载
-			loading: false
+			loading: false,
+			mdShow: false, // 未登录点击加入购物车
+			mdShowCart: false // 登录点击加入购物车
 		}
 	},
 	mounted() {
@@ -112,22 +135,27 @@ export default {
 			}
 			axios({
 				method: 'GET',
-				url: '/api/goods',
+				url: '/api/goods/list',
 				params: param
 			}).then(function(res) {
-				_this.loading = false
-				if(flag) {
-					_this.goodslist = _this.goodslist.concat(res.data.result.list);
-					if(res.data.result.count == 0) {
-						_this.busy = true;
+				_this.loading = false;
+				if(res.data.status == "0") {
+					if(flag) {
+						_this.goodslist = _this.goodslist.concat(res.data.result.list);
+						if(res.data.result.count == 0) {
+							_this.busy = true;
+						}
+						else {
+							_this.busy = false;
+						}
 					}
 					else {
+						_this.goodslist = res.data.result.list
 						_this.busy = false;
 					}
 				}
 				else {
-					_this.goodslist = res.data.result.list
-					_this.busy = false;
+					_this.goodslist = [];
 				}
 			})
 		},
@@ -145,8 +173,8 @@ export default {
 			let _this = this;
 			this.busy = true;
 			setTimeout(() => {
-				this.page++;
-				this.get_goodslist(true);
+				_this.page++;
+				_this.get_goodslist(true);
 			}, 1000);
 		},
 		show_filter_pop() {
@@ -158,22 +186,36 @@ export default {
 			this.priceOverLay = false;
 		},
 		addcart(id) {
+			let _this = this;
 			axios({
 				method: 'POST',
 				url: '/api/goods/addCart',
 				data: {productId:id}
 			}).then((res)=>{
-				console.log(res);
+				if(res.data.status == "0") {
+					_this.mdShowCart = true;
+				}
+				else {
+					_this.mdShow = true;
+				}
 			})
 		},
+		closeModal() {
+			this.mdShow = false;
+		}
 	},
 	components: {
 		NavHeader,
 		NavFooter,
-		NavBread
+		NavBread,
+		Modal
 	}
 }
 </script>
 
-<style>
+<style scoped>
+	.sort-up {
+	transform: rotate(180deg);
+	transition: all .3s ease-out;
+}
 </style>
