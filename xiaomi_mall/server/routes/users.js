@@ -151,6 +151,7 @@ router.post('/cart/edit',(req,res,next)=>{
     });
 });
 
+// 全选
 router.post('/cart/editCheckAll',(req,res,next)=>{
     let userId = req.cookies.userId;
     let checkAll = req.body.checkAll;
@@ -165,6 +166,52 @@ router.post('/cart/editCheckAll',(req,res,next)=>{
             res.json(responseData);
         })
     })
+});
+
+// 查询用户地址
+router.get('/addressList',(req,res,next)=>{
+    let userId = req.cookies.userId;
+    Users.findOne({userId:userId}).then((doc)=>{
+        responseData.status = "0";
+        responseData.msg = "";
+        responseData.result = doc.addressList;
+        res.json(responseData);
+    })
+})
+
+// 设置默认地址
+router.post('/addressList/setdefault',(req,res,next)=>{
+    let addressId = req.body.addressId;
+    let userId = req.cookies.userId;
+    Users.findOne({userId: userId}).then((userDoc)=>{
+        let addressList = userDoc.addressList;
+        addressList.forEach((item)=>{
+            if(item.addressid == addressId) {
+                item.isDefault = true;
+            } else {
+                item.isDefault = false;
+            }
+        });
+        userDoc.save((doc)=>{
+            responseData.status = "0";
+            responseData.msg = "";
+            responseData.result = "";
+            res.json(responseData);
+        })
+    });
+});
+
+// 删除地址
+router.post('/addressList/delAddress',(req,res,next)=>{
+    let userId = req.cookies.userId;
+    let addressId = req.body.addressId;
+    Users.update({userId:userId},{$pull:{'addressList':{'addressid':addressId}}}).then((doc)=>{
+        responseData.status = "0";
+        responseData.msg = "删除成功！";
+        responseData.result = "";
+        res.json(responseData);
+    });
+
 });
 
 module.exports = router;
