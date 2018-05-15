@@ -116,7 +116,7 @@
 					</div>
 				</div>
 				<div class="next-btn-wrap">
-    					<router-link class="btn btn--m btn--red" :to="{path: '/orderConfirm',query: {'addressId':selectedAddrId}}">Next</router-link>
+    					<router-link class="btn btn--m btn--red" :to="{path: '/orderconfirm',query: {'addressId':selectedAddrId}}">Next</router-link>
 				</div>
 			</div>
 		</div>

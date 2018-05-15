@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Users = require('./../models/users');
+require('./../util/util');
 
 var responseData;
 
@@ -11,6 +12,7 @@ router.use((req, res, next) => {
   };
   next();
 })
+
 // 登录
 router.post('/login', function(req, res, next) {
   let param = {
@@ -73,6 +75,24 @@ router.get('/checkLogin',function(req,res,next) {
         responseData.msg = "未登录";
         responseData.result = "";
         res.json(responseData);
+    }
+});
+
+// 购物车数量
+router.get("/getCartCount",(req,res,next)=>{
+    if(req.cookies && req.cookies.userId) {
+        let userId = req.cookies.userId;
+        Users.findOne({userId:userId}).then(doc=>{
+            let cartList = doc.cartList;
+            let cartCount = 0;
+            cartList.forEach(item=>{
+                cartCount += parseInt(item.productNum)
+            })
+            responseData.status = "0";
+            responseData.msg = "";
+            responseData.result = cartCount;
+            res.json(responseData);
+        });
     }
 });
 
@@ -211,6 +231,90 @@ router.post('/addressList/delAddress',(req,res,next)=>{
         responseData.result = "";
         res.json(responseData);
     });
+
+});
+
+// 支付
+router.post('/payment',(req,res,next)=>{
+    let userId = req.cookies.userId;
+    let orderTotal = req.body.orderTotal;
+    let addressId = req.body.addressId;
+
+    Users.findOne({userId:userId}).then( doc => {
+        let address = '';
+        let goodslist = [];
+        // 获取当前地址
+        doc.addressList.forEach(item =>{
+            if(addressId == item.addressid) {
+                address = item;
+            }
+        });
+        // 获取购买的商品
+        doc.cartList.filter(item =>{
+            if(item.checked == "1") {
+                goodslist.push(item);
+            }
+        });
+
+        //  生成订单号
+        let platform = 'genius-';
+        //  随机数
+        let r1 = Math.floor(Math.random()*10);
+        let r2 = Math.floor(Math.random()*10);
+
+        // 时间
+        let systemDate = new Date().Format('yyyyMMddhhmmss');
+        let createDate = new Date().Format('yyyy-MM-dd hh:mm:ss');
+
+        let orderId = platform + r1 + systemDate + r2;
+        let order = {
+            orderId: orderId,
+            orderTotal: orderTotal,
+            addressInfo: address,
+            goodsList: goodslist,
+            orderStatus: "1",
+            createDate: createDate
+        }
+
+        doc.orderList.push(order);
+
+        doc.save().then(doc1=>{
+            responseData.status = "0";
+            responseData.msg = "";
+            responseData.result = {
+                orderId: order.orderId,
+                orderTotal: order.orderTotal
+            };
+            res.json(responseData);
+         })
+
+    });
+});
+
+// 订单成功
+router.get('/orderDetail',(req,res,next)=>{
+    let orderId = req.query.orderId;
+    let userId = req.cookies.userId;
+    let order = '';
+    Users.findOne({userId:userId}).then(doc=>{
+        doc.orderList.forEach(item=>{
+            if(item.orderId == orderId) {
+                order = item;
+            }
+        });
+        if(order) {
+            responseData.status = "0";
+            responseData.msg = "";
+            responseData.result = order.orderTotal;
+            res.json(responseData);
+        }
+        else {
+            responseData.status = "1";
+            responseData.msg = "无此订单！";
+            responseData.result = "";
+            res.json(responseData);
+        }
+    })
 
 });
 

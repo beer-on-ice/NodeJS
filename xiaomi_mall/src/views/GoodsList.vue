@@ -82,6 +82,7 @@ import NavHeader from '@/components/NavHeader'
 import NavFooter from '@/components/NavFooter'
 import NavBread from '@/components/NavBread'
 import Modal from '@/components/Modal'
+import {mapState,mapMutations} from 'vuex'
 
 export default {
 	data() {
@@ -123,7 +124,15 @@ export default {
 	mounted() {
 		this.get_goodslist();
 	},
+	computed: {
+		...mapState([
+			'cartCount'
+		])
+	},
 	methods: {
+		...mapMutations([
+			'updateCartCount'
+		]),
 		get_goodslist(flag) {
 			this.loading = true;
 			let _this = this;
@@ -194,6 +203,7 @@ export default {
 			}).then((res)=>{
 				if(res.data.status == "0") {
 					_this.mdShowCart = true;
+					_this.updateCartCount(1)
 				}
 				else {
 					_this.mdShow = true;

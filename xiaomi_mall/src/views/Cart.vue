@@ -145,6 +145,7 @@ import NavHeader from 'components/NavHeader'
 import NavFooter from 'components/NavFooter'
 import NavBread from 'components/NavBread'
 import Modal from 'components/Modal'
+import {mapState , mapMutations} from 'vuex'
 import axios from 'axios'
 
 export default {
@@ -162,6 +163,9 @@ export default {
     //     currency: currency
     // },
     computed: {
+        ...mapState([
+            'cartCount'
+        ]),
         // 计算全选
         checkAllFlag() {
             return this.checkedCount == this.cartList.length;
@@ -190,6 +194,10 @@ export default {
 		Modal
 	},
 	methods: {
+        ...mapMutations([
+            'updateCartCount',
+            'initCartCount'
+        ]),
 		init() {
 			let _this = this;
 			axios({
@@ -217,16 +225,19 @@ export default {
                 if(res.data.status == "0") {
                     _this.modalConfirm = false;
                     _this.init();
+                    _this.updateCartCount(-this.delItem.productNum)
                 }
             })
         },
         editCart(flag,item) {
             if(flag == 'add') {
                 item.productNum++;
+                this.updateCartCount(1);
             }
             else if(flag == "minu") {
                 if(item.productNum <=1) return;
                 item.productNum--;
+                this.updateCartCount(-1);
             }
             else {
                 item.checked = item.checked == "1"? "0": "1";

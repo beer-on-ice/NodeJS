@@ -32,7 +32,7 @@
 				<a href="javascript:void(0)" class="navbar-link" @click="loginModalFlag=true" v-if="!nickName">Login</a>
 				<a href="javascript:void(0)" class="navbar-link" @click="logout" v-else>Logout</a>
 				<div class="navbar-cart-container">
-					<span class="navbar-cart-count"></span>
+					<span class="navbar-cart-count" v-if="cartCount>0">{{cartCount}}</span>
 					<a class="navbar-link navbar-cart-link" href="/#/cart">
                     <svg class="navbar-cart-logo">
                       <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
@@ -90,6 +90,8 @@
 <script>
     import './../assets/css/login.css'
     import axios from 'axios'
+	import {mapState , mapMutations} from 'vuex'
+
     export default {
     	data() {
     		return {
@@ -98,23 +100,35 @@
                 errTip: false,
                 loginModalFlag: false,
                 tips: '',
-                nickName: ''
+                // nickName: ''
             }
     	},
-    	created() {},
+		computed: {
+			...mapState([
+				'nickName',
+				'cartCount'
+			])
+		},
 		mounted() {
 			this.checkLogin();
 		},
     	methods: {
+			...mapMutations([
+				'updateUserInfo',
+				'updateCartCount',
+				'initCartCount'
+			]),
 			checkLogin() {
 				let _this = this;
+				this.getCartCount();
 				axios({
 					methods:"GET",
 					url:"/api/users/checkLogin"
 				}).then((res)=>{
 					let response = res.data;
 					if(response.status == "0") {
-						_this.nickName = response.result.userName;
+						// _this.nickName = response.result.userName;
+						_this.updateUserInfo(response.result.userName);
 					}
 				})
 			},
@@ -133,7 +147,9 @@
                         _this.errTip = false;
                         _this.tips = response.msg;
                         _this.loginModalFlag = false;
-                        _this.nickName = response.result.nickName;
+                        // _this.nickName = response.result.nickName;
+						_this.updateUserInfo(response.result.userName);
+						location.reload() ;
                     } else {
                         _this.errTip = true;
                         _this.tips = response.msg;
@@ -149,10 +165,19 @@
                 }).then((res)=>{
                     let response = res.data;
                     if(response.status == "0") {
-                        _this.nickName = "";
+                        // _this.nickName = "";
+						_this.updateUserInfo('');
                     }
                 })
-            }
+            },
+			getCartCount() {
+				axios({
+					method: 'GET',
+					url:'/api/users/getCartCount'
+				}).then(res=>{
+					this.initCartCount(res.data.result);
+				});
+			}
         }
     }
 </script>
