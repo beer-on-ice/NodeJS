@@ -130,6 +130,14 @@
 			<a class="btn btn--m btn--red" href="javascript:;" @click="isMdShow=false">取消</a>
 		</div>
 	</modal>
+	<modal :md-show="isMdShow2" @close="isMdShow2=false">
+		<p slot="message">
+			地址列表最少需要一条数据，无法删除！
+		</p>
+		<div slot="btnGroup">
+			<a class="btn btn--m btn--red" href="javascript:;" @click="isMdShow2=false">好的</a>
+		</div>
+	</modal>
 	<nav-footer></nav-footer>
 </div>
 </template>
@@ -152,7 +160,8 @@ export default {
 			selectedAddrId: '',
 			addressList: [],
 			isMdShow: false,
-			addressId: ''
+			addressId: '',
+			isMdShow2: false
 		}
 	},
 	mounted() {
@@ -204,8 +213,13 @@ export default {
             })
         },
         delAddress(id) {
-            this.isMdShow = true;
-            this.addressId = id;
+			if(this.addressList.length>1){
+				this.isMdShow = true;
+				this.addressId = id;
+			}
+			else {
+				this.isMdShow2 = true;
+			}
         },
         sureDel() {
             let _this = this;
