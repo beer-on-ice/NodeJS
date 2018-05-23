@@ -20,7 +20,7 @@ var UserSchema = new mongoose.Schema({
     }
 })
 // 每次在执行save之前执行回调
-UserSchema.pre('save',function() {
+UserSchema.pre('save',function(next) {
     var user = this
     if(this.isNew) {
         this.meta.createAt = this.meta.updateAt = Date.now()
@@ -48,4 +48,13 @@ UserSchema.statics = {
     }
 }
 
+// 实例方法
+UserSchema.methods = {
+    comparePassword: function(_password,cb) {
+        bcrypt.compare(_password,this.password,function(err,isMatch) {
+            if(err) return cb(err)
+            cb(null,isMatch)
+        })
+    }
+}
 module.exports = UserSchema

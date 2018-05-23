@@ -17,6 +17,7 @@ app.locals.moment = require('moment')
 
 app.use('/admin',require('./routers/admin'))
 app.use('/movie',require('./routers/movie'))
+app.use('/user',require('./routers/user'))
 // index page
 app.get('/',(req,res)=>{
     Movie.fetch(function(err,movies) {
@@ -29,6 +30,7 @@ app.get('/',(req,res)=>{
         }
     })
 })
+
 
 mongoose.connect('mongodb://localhost:27017/movie',function(err) {
     if(err) {console.log(err)}

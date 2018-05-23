@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 var _underscore = require('underscore')
 var Movie = require('./../models/movie')
+var User = require('../models/user')
 
 // admin page
 router.get('/movie',(req,res)=>{
@@ -91,5 +92,17 @@ router.delete('/list',function(req,res) {
         })
     }
 })
+
+// userlist
+router.get('/userlist',(req,res)=>{
+    User.fetch(function(err,users) {
+        if(err) {console.log(err)}
+        res.render('pages/userlist',{
+          title: '用户列表',
+          users: users
+        })
+    })
+})
+
 
 module.exports = router
