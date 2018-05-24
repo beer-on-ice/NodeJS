@@ -20,8 +20,9 @@ var MovieSchema = new mongoose.Schema({
         }
     }
 })
+
 // 每次在执行save之前执行回调
-MovieSchema.pre('save',function() {
+MovieSchema.pre('save',function(next) {
     if(this.isNew) {
         this.meta.createAt = this.meta.updateAt = Date.now()
     }
@@ -30,6 +31,7 @@ MovieSchema.pre('save',function() {
     }
     next()
 })
+
 // 静态方法
 MovieSchema.statics = {
     fetch: function(cb) {

@@ -1,8 +1,8 @@
 var express = require('express')
 var router = express.Router()
-var Movie = require('./../models/movie')
+var Movie = require('../app/models/movie')
 
-// detail page
+// 电影详情页
 router.get('/:id',(req,res)=>{
     var id = req.params.id
     Movie.findById(id,function(err,movie) {

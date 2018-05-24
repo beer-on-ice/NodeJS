@@ -8,6 +8,14 @@ var UserSchema = new mongoose.Schema({
         unique: true
     },
     password: String,
+    //  0 : normal user
+    //  1 : verified user
+    //  2 : advanced user
+    //  >10: admin
+    role: {
+        type: Number,
+        default: 0
+    },
     meta: {
         createAt: {
             type:Date,
@@ -28,7 +36,7 @@ UserSchema.pre('save',function(next) {
     else {
         this.meta.updateAt = Date.now()
     }
-
+    // 加盐加密
     bcrypt.genSalt(SALT_WORK_FACTOR,function(err,salt) {
         if(err) return next(err)
         bcrypt.hash(user.password,salt,function(err,hash) {

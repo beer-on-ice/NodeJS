@@ -1,3 +1,4 @@
+// 电影列表删除按钮点击
 $(function() {
     $('.del').click(function(e) {
         var target = $(e.target)

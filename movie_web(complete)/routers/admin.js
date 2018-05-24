@@ -1,8 +1,28 @@
 var express = require('express')
 var router = express.Router()
 var _underscore = require('underscore')
-var Movie = require('./../models/movie')
-var User = require('../models/user')
+var Movie = require('../app/models/movie')
+var User = require('../app/models/user')
+
+// 中间件检测是否已经登录
+router.use(function(req,res,next) {
+    let user = req.session.user
+
+    if(!user) {
+        return res.redirect('/user/signin')
+    }
+    next()
+})
+
+// 中间件检测是否是管理员
+router.use(function(req,res,next) {
+    let user = req.session.user
+
+    if(user.role <= 10) {
+        return res.redirect('/user/signin')
+    }
+    next()
+})
 
 // admin page
 router.get('/movie',(req,res)=>{
@@ -22,7 +42,7 @@ router.get('/movie',(req,res)=>{
 })
 
 // update movie
-router.get('/update/:id',function(req,res) {
+router.get('/movie/update/:id',function(req,res) {
     var id = req.params.id
     if(id) {
         Movie.findById(id,function(err,movie) {
@@ -34,7 +54,7 @@ router.get('/update/:id',function(req,res) {
     }
 })
 
-// post movie
+// 创建新电影
 router.post('/movie/new',function(req,res) {
     var id = req.body.movie._id
     var movieObj = req.body.movie
@@ -68,18 +88,19 @@ router.post('/movie/new',function(req,res) {
     }
 })
 
-// list page
-router.get('/list',(req,res)=>{
+// 电影列表
+router.get('/movie/list',(req,res)=>{
     Movie.fetch(function(err,movies) {
         if(err) {console.log(err)}
         res.render('pages/list',{
-      title: '电影列表',
-      movies: movies
-    })
+          title: '电影列表',
+          movies: movies
+        })
     })
 })
 
-router.delete('/list',function(req,res) {
+// 删除电影
+router.delete('/movie/list',function(req,res) {
     var id = req.query.id
     if(id) {
         Movie.remove({_id:id},function(err,movie) {
@@ -93,16 +114,16 @@ router.delete('/list',function(req,res) {
     }
 })
 
-// userlist
-router.get('/userlist',(req,res)=>{
+
+// 用户列表-只有管理员能进
+router.get('/user/userlist',(req,res)=>{
     User.fetch(function(err,users) {
         if(err) {console.log(err)}
         res.render('pages/userlist',{
-          title: '用户列表',
-          users: users
+            title: '用户列表',
+            users: users
         })
     })
 })
-
 
 module.exports = router
