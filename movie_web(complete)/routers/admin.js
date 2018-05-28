@@ -3,6 +3,7 @@ var router = express.Router()
 var _underscore = require('underscore')
 var Movie = require('../app/models/movie')
 var User = require('../app/models/user')
+var Comment = require('../app/models/comment')
 
 // 中间件检测是否已经登录
 router.use(function(req,res,next) {
@@ -56,11 +57,11 @@ router.get('/movie/update/:id',function(req,res) {
 
 // 创建新电影
 router.post('/movie/new',function(req,res) {
-    var id = req.body.movie._id
     var movieObj = req.body.movie
+    var id = movieObj._id
     var _movie = null;
 
-    if((typeof id) !== 'undefined') {
+    if(id) {
         Movie.findById(id,function(err,movie) {
             if(err) {console.log(err)}
             _movie = _underscore.extend(movie,movieObj)
@@ -124,6 +125,32 @@ router.get('/user/userlist',(req,res)=>{
             users: users
         })
     })
+})
+
+router.post('/comment',(req,res)=>{
+    let _comment = req.body.comment
+    let movieId = _comment.movie
+    // 回复
+    if(_comment.cid) {
+        // 根据当前评论的_id找到当前评论
+        // $addToSet: 不允许重复; $push: 可以重复
+        var reply =  {
+            from:  _comment.from,    // 做出回复的人的id（即当前登陆用户）
+            to: _comment.tid,         // 要回复的人的id（即这条评论发布者）
+            content: _comment.content
+        }
+        Comment.update({_id:_comment.cid}, {'$push':{reply:reply} } ,function(err,news) {
+            if(err)console.log(err);
+            res.redirect('/movie/'+ movieId)
+        } );
+    }
+    else {
+        let comment = new Comment(_comment)
+        comment.save(function(err,comment) {
+            if(err) console.log(err);
+            res.redirect('/movie/'+ movieId)
+        })
+    }
 })
 
 module.exports = router

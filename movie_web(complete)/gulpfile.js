@@ -18,7 +18,7 @@ gulp.task("node", function() {
     })
 });
 
-gulp.task('server', ["node"], function() {
+gulp.task('default', ["node"], function() {
     var files = [
         'public/js/**',
         'models/**/*.js',
