@@ -1,9 +1,8 @@
-var mongoose = require('mongoose')
-var Schema = mongoose.Schema
-var ObjectId = Schema.Types.ObjectId
+let mongoose = require('mongoose')
+let Schema = mongoose.Schema
+let ObjectId = Schema.Types.ObjectId
 
-
-var CategorySchema = new Schema({
+let CategorySchema = new Schema({
     name: String,
     movies: [{
         type: ObjectId,

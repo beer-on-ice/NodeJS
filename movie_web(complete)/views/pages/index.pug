@@ -6,14 +6,20 @@ block content
             each cat in categories
                 .panel.panel-default
                     .panel-heading
-                        h3 #{cat.name}
+                        h3 
+                            - var url = '/results/?cat='+ cat._id +'&p=1'
+                            a(href=url) #{cat.name}
                     .panel-body
                         if cat.movies && cat.movies.length > 0
                             each item in cat.movies
                                 .col-md-2
                                     .thumbnail
                                         a(href="/movie/"+item._id)
-                                            img(src=item.poster,alt=item.title)
+                                            if item.poster.startsWith('https')
+                                                img(src=item.poster,alt=item.title)
+                                            else
+                                                - var url = '/public/upload/' + item.poster
+                                                img(src=url,alt=item.title)
                                         .caption
                                             h3 #{item.title}
                                             p:  a.btn.btn-primary(href="/movie/"+item._id,role="button") 观看预告片

@@ -5,22 +5,17 @@ var Movie = require('../app/models/movie')
 var User = require('../app/models/user')
 var Comment = require('../app/models/comment')
 var Category = require('../app/models/category')
+var fs = require('fs')
+var path = require('path')
 
-// 中间件检测是否已经登录
+// 中间件检测是否已经登录且是否是管理员
 router.use(function(req,res,next) {
     let user = req.session.user
 
     if(!user) {
         return res.redirect('/user/signin')
     }
-    next()
-})
-
-// 中间件检测是否是管理员
-router.use(function(req,res,next) {
-    let user = req.session.user
-
-    if(user.role <= 10) {
+    else if(user && user.role <= 10) {
         return res.redirect('/user/signin')
     }
     next()
@@ -88,13 +83,41 @@ router.delete('/movielist',function(req,res) {
     }
 })
 
+// 海报上传
+router.use(function(req,res,next) {
+    var postData = req.files.uploadPoster
+    var filePath = postData.path
+    var originalFilename = postData.originalFilename
+
+    if(originalFilename) {
+        fs.readFile(filePath,function(err,data) {
+            var timestamp = Date.now()
+            var type = postData.type.split('/')[1]
+            var poster = timestamp + '.' + type
+            var newPath = path.join(__dirname,'../','/public/upload/' + poster)
+            fs.writeFile(newPath,data,function(err) {
+                req.poster = poster
+                next()
+            })
+        })
+    }
+    else {
+        next()
+    }
+})
+
 // 创建新电影
 router.post('/movie/new',function(req,res) {
     var movieObj = req.body.movie
     var id = movieObj._id
     var _movie = null;
+
+    // 查看是否有海报改动
+    if(req.poster) {
+        movieObj.poster = req.poster
+    }
+
     if(id) {
-        // console.log(movieObj);
         Movie.update({_id:id}, movieObj ,function(err,news) {
             if(err) console.log(err);
             res.redirect('/movie/'+ movieObj._id)
@@ -111,15 +134,32 @@ router.post('/movie/new',function(req,res) {
     }
     else {
         _movie = new Movie(movieObj)
-        var categoryId = _movie.category
-
+        var categoryId = movieObj.category
+        var categoryName = movieObj.categoryName
         _movie.save(function(err,movie) {
             if(err) {console.log(err)}
-
-            Category.update({_id:categoryId}, {'$push':{movies:movie._id} } ,function(err,news) {
+            // 如果选择了单选按钮
+            if(categoryId) {
+                Category.update({_id:categoryId}, {'$push':{movies:movie._id} } ,function(err,news) {
                 if(err) console.log(err);
                 res.redirect('/movie/'+ movie._id)
             } );
+            }
+            // 如果新建了分类名称
+            else if(categoryName) {
+                var category = new Category({
+                    name: categoryName,
+                    movies: [movie._id]
+                })
+                category.save(function(err,category) {
+                    if(err) console.log(err);
+                    movie.category = category._id
+                    movie.save(function(err,newmovie) {
+                        if(err) console.log(err);
+                        res.redirect('/movie/'+movie._id)
+                    })
+                })
+            }
 
         })
     }

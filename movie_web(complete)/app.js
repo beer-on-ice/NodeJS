@@ -1,16 +1,24 @@
 ////////////////    入口文件      ////////////////////
 let express = require('express')
 let mongoose = require('mongoose')
+
 // 解析post请求
 let bodyParser = require('body-parser')
+
 // express-session中间件将会话数据存储在服务器上
 let session = require('express-session')
+
 // connect-mongo用于将session持久化到mongodb数据库
 let mongoStore = require('connect-mongo')(session)
+
 // cookieParser 对http传入的cookie进行解析
 let cookieParser = require('cookie-parser')
+
+// 处理enctype="multipart/form-data"类型表单数据
+let multipart = require('connect-multiparty')
 // 日志组件
 let morgan = require('morgan')
+
 let dbUrl = 'mongodb://localhost:27017/movie'
 let port = process.env.PORT || 3000
 let app = express()
@@ -27,6 +35,7 @@ app.use('/public',express.static(__dirname + '/public'))
 app.set('views', './views')
 app.set('view engine','pug')
 
+app.use(require('connect-multiparty')());
 app.use(cookieParser())
 app.use(session({
     secret: 'movie', // 一个String类型的字符串，作为服务器端生成session的签名

@@ -3,9 +3,16 @@ var router = express.Router()
 var Movie = require('../app/models/movie')
 var Comment = require('../app/models/comment')
 
+
 // 电影详情页
 router.get('/:id',(req,res)=>{
     var id = req.params.id
+
+    // 访问量增加
+    Movie.update({_id: id},{$inc: {pv:1}},function(err) {
+        if(err) console.log(err);
+    })
+
     Movie.findById(id,function(err,movie) {
         Comment
         .find({movie:id})
