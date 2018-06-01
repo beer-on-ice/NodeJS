@@ -27,13 +27,12 @@ function Wechat(opts) {
                 return that.updateAccessToken()
             }
             if (that.isValidAccessToken(data)) {
-                Promise.resolve(data)
+                return Promise.resolve(data)
             } else {
                 return that.updateAccessToken()
             }
         })
         .then(function(data) {
-            console.log(data)
             that.access_token = data.access_token
             that.expires_in = data.expires_in // 过期时间字段
             that.saveAccessToken(data)
