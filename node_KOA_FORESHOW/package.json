@@ -1,0 +1,14 @@
+{
+  "name": "node_KOA_FORESHOW",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "lijin",
+  "license": "MIT",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js"
+  },
+  "dependencies": {
+    "koa": "^2.5.1"
+  }
+}
