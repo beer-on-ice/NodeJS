@@ -1,18 +1,8 @@
 {
-  "name": "node_KOA_FORESHOW",
+  "name": "koa_practise",
   "version": "1.0.0",
-  "main": "server/index.js",
-  "author": "lijin",
+  "main": "main.js",
   "license": "MIT",
-  "scripts": {
-    "start": "node server/index.js"
-  },
-  "dependencies": {
-    "ejs": "^2.6.1",
-    "koa": "^2.5.1",
-    "koa-views": "^6.1.4",
-    "pug": "^2.0.3"
-  },
   "devDependencies": {
     "eslint": "^5.1.0",
     "eslint-config-standard": "^11.0.0",
