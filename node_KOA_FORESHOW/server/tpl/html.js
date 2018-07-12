@@ -18,7 +18,7 @@ module.exports = `
           </div>
           <div class="col-md-4">
             <p>
-              测试静态HTML页面
+              测试静态 HTML 页面
             </p>
           </div>
         </div>
