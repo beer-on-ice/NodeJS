@@ -4,6 +4,8 @@
   "main": "main.js",
   "license": "MIT",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "co": "^4.6.0",
     "eslint": "^5.1.0",
     "eslint-config-standard": "^11.0.0",
@@ -11,6 +13,19 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.8.0",
     "eslint-plugin-standard": "^3.1.0",
-    "node-fetch": "^2.1.2"
+    "node-fetch": "^2.1.2",
+    "nodemon": "^1.18.2",
+    "rimraf": "^2.6.2"
+  },
+  "scripts": {
+    "dev": "nodemon -w src --exec \"babel-node src --presets env\"",
+    "production": "node dist",
+    "build": "rimraf dist && babel src -s -D -d dist --presets env",
+    "precommit": "standard --parser babel-eslint src/**/*.js | snazzy"
+  },
+  "dependencies": {
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-runtime": "^6.26.0",
+    "koa": "^2.5.2"
   }
 }
