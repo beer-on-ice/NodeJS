@@ -4,7 +4,7 @@ const compose = require('koa-compose')
 const session = require('koa-session')
 const app = new Koa()
 const mid1 = async (ctx, next) => {
-  ctx.body = 'Hi, '
+  ctx.response.body = 'Hii, '
   ctx.type = 'text/html; charset=utf-8'
   await next()
   ctx.body = ctx.body + ' 1'
@@ -41,9 +41,15 @@ app.use(session(app))
 
 app.use((ctx, next) => {
   if (ctx.path === '/favicon.ico') return
-  let n = ctx.session.views || 0
-  ctx.session.views = ++n
-  ctx.body = ctx.body + '  ----' + n + ' views -----  '
+  if (ctx.path === '/') {
+    let n = ctx.session.views || 0
+    ctx.session.views = ++n
+    ctx.body = ctx.body + '  ----' + n + ' views -----  '
+  } else if (ctx.path == '/hi') {
+    ctx.body = 'HI ,God'
+  } else {
+    ctx.body = '404'
+  }
   next()
 })
 
