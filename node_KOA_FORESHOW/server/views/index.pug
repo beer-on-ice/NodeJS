@@ -87,49 +87,83 @@ block content
   include ./includes/header
 
   .container-fluid
-    .sidebar
-      .collapse.cat-links
-        .sidebar-item.active
-          a.sidebar-link(href='/link1') 2018 年
-          a.sidebar-link(href='/link1') 2019 年
-          a.sidebar-link(href='/link1') 2020 年
-          a.sidebar-link(href='/link1') 2021 年
-          a.sidebar-link(href='/link1') 2022 年
-          a.sidebar-link(href='/link1') 2023 年
-          a.sidebar-link(href='/link1') 2024 年
-          a.sidebar-link(href='/link1') 2025 年
-    .content
-      .row
-        .col-md-6
-          .card
-            img.card-img-top(src='https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2519070834.webp',data-video='http://vt1.doubanio.com/201807121451/d7e2eed2ad3bec54b40656253935a8e1/view/movie/M/402330315.mp4')
-            .card-body
-              h4.card-title 我不是药神
-              p.card-desc 一位不速之客的意外到访，打破了神油店老板程勇的平凡人生，他从一个交不起房租的男性保健品商贩，一跃成为印度仿制药“格列宁”的独家代理商。收获巨额利润的他，生活剧烈变化，被病患们冠以“药神”的称号。但是，一场关于救赎的拉锯战也在波涛暗涌中慢慢展开......
-            .card-footer
-              small.text-muted 1 天前更新
-        .col-md-6
-          .card
-            img.card-img-top(src='https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2526297221.webp',data-video='http://vt1.doubanio.com/201807121506/1cfdcdf0fe2b4fb3413ef410088cd6eb/view/movie/M/402330091.mp4')
-            .card-body
-              h4.card-title 邪不压正
-              p.card-desc 北洋年间，北京以北。习武少年李天然目睹师兄朱潜龙勾结日本特务根本一郎，杀害师父全家。李天然侥幸从枪下逃脱，被美国医生亨德勒救下
-            .card-footer
-              small.text-muted 1 天前更新
-      .row
-        .col-md-6
-          .card
-            img.card-img-top(src='https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2519070834.webp',data-video='http://vt1.doubanio.com/201807121451/d7e2eed2ad3bec54b40656253935a8e1/view/movie/M/402330315.mp4')
-            .card-body
-              h4.card-title 这是电影标题
-              p.card-desc 北洋年间，北京以北。习武少年李天然目睹师兄朱潜龙勾结日本特务根本一郎，杀害师父全家。李天然侥幸从枪下逃脱，被美国医生亨德勒救。 
-            .card-footer
-              small.text-muted 1 天前更新
-        .col-md-6
-          .card
-            img.card-img-top(src='https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2526297221.webp',data-video='http://vt1.doubanio.com/201807121506/1cfdcdf0fe2b4fb3413ef410088cd6eb/view/movie/M/402330091.mp4')
-            .card-body
-              h4.card-title 这是电影标题
-              p.card-desc 这是电影描述
-            .card-footer
-              small.text-muted 1 天前更新
+    .row
+      .col-12.col-md-3.col-xl-2.sidebar
+        .collapse.cat-links
+          .sidebar-item.active
+            a.sidebar-link(href='/') Links
+            ul.nav.sidebar-inner
+              li.active.sidebar-inner-active
+                a(href='/') Link1
+              li.sidebar-inner-active
+                a(href='/') Link2
+      .col-12.col-md-9.col-xl-9.py-md-3.pl-md-5.content
+        .row
+          .col-md-6
+            .card
+              img.card-img-top(src='https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2519070834.webp',data-video='http://180.96.69.24/vhot2.qqvideo.tc.qq.com/AHaqy1jvS0DEJzODJfuNzGDMeNh1hADVQRQVt-kIE3KM/n0397v0xidp.p712.1.mp4?sdtfrom=v1010&guid=de92305288308b68465da93580e0f0ce&vkey=6C7A6B198784BAD82E17B4A978267BDD931E35847925898B97EE5438DE13629BEB9C3E8175816794C2D58E884291EE96493FC058977E2CB594BEF22E1D4ADD1F649FDC96EF7BDDE2FFAC7BD2196DE2DCDF413081877FB90C4153BDA57270575E9DD1566BCBABA569FD30A198DB93CE3CB42365A9E8A4A6F5')
+              .card-body
+                h4.card-title 我不是药神
+                p.card-desc 一位不速之客的意外到访，打破了神油店老板程勇的平凡人生，他从一个交不起房租的男性保健品商贩，一跃成为印度仿制药“格列宁”的独家代理商。收获巨额利润的他，生活剧烈变化，被病患们冠以“药神”的称号。但是，一场关于救赎的拉锯战也在波涛暗涌中慢慢展开......
+              .card-footer
+                small.text-muted 1 天前更新
+          .col-md-6
+            .card
+              img.card-img-top(src='https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2526297221.webp',data-video='http://180.96.69.24/vhot2.qqvideo.tc.qq.com/AHaqy1jvS0DEJzODJfuNzGDMeNh1hADVQRQVt-kIE3KM/n0397v0xidp.p712.1.mp4?sdtfrom=v1010&guid=de92305288308b68465da93580e0f0ce&vkey=6C7A6B198784BAD82E17B4A978267BDD931E35847925898B97EE5438DE13629BEB9C3E8175816794C2D58E884291EE96493FC058977E2CB594BEF22E1D4ADD1F649FDC96EF7BDDE2FFAC7BD2196DE2DCDF413081877FB90C4153BDA57270575E9DD1566BCBABA569FD30A198DB93CE3CB42365A9E8A4A6F5')
+              .card-body
+                h4.card-title 邪不压正
+                p.card-desc 北洋年间，北京以北。习武少年李天然目睹师兄朱潜龙勾结日本特务根本一郎，杀害师父全家。李天然侥幸从枪下逃脱，被美国医生亨德勒救下
+              .card-footer
+                small.text-muted 1 天前更新
+        .row
+          .col-md-6
+            .card
+              img.card-img-top(src='https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2519070834.webp',data-video='http://180.96.69.24/vhot2.qqvideo.tc.qq.com/AHaqy1jvS0DEJzODJfuNzGDMeNh1hADVQRQVt-kIE3KM/n0397v0xidp.p712.1.mp4?sdtfrom=v1010&guid=de92305288308b68465da93580e0f0ce&vkey=6C7A6B198784BAD82E17B4A978267BDD931E35847925898B97EE5438DE13629BEB9C3E8175816794C2D58E884291EE96493FC058977E2CB594BEF22E1D4ADD1F649FDC96EF7BDDE2FFAC7BD2196DE2DCDF413081877FB90C4153BDA57270575E9DD1566BCBABA569FD30A198DB93CE3CB42365A9E8A4A6F5')
+              .card-body
+                h4.card-title 这是电影标题
+                p.card-desc 北洋年间，北京以北。习武少年李天然目睹师兄朱潜龙勾结日本特务根本一郎，杀害师父全家。李天然侥幸从枪下逃脱，被美国医生亨德勒救。 
+              .card-footer
+                small.text-muted 1 天前更新
+          .col-md-6
+            .card
+              img.card-img-top(src='https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2526297221.webp',data-video='http://180.96.69.24/vhot2.qqvideo.tc.qq.com/AHaqy1jvS0DEJzODJfuNzGDMeNh1hADVQRQVt-kIE3KM/n0397v0xidp.p712.1.mp4?sdtfrom=v1010&guid=de92305288308b68465da93580e0f0ce&vkey=6C7A6B198784BAD82E17B4A978267BDD931E35847925898B97EE5438DE13629BEB9C3E8175816794C2D58E884291EE96493FC058977E2CB594BEF22E1D4ADD1F649FDC96EF7BDDE2FFAC7BD2196DE2DCDF413081877FB90C4153BDA57270575E9DD1566BCBABA569FD30A198DB93CE3CB42365A9E8A4A6F5')
+              .card-body
+                h4.card-title 这是电影标题
+                p.card-desc 这是电影描述
+              .card-footer
+                small.text-muted 1 天前更新
+  #myModal.modal.fade.bd-example-modal-lg(tabindex="-1",role="dialog",aria-labelledby="myLargeModalLabel",aria-hidden="true")
+    .modal-dialog.modal-lg
+      #videoModal.modal-content
+
+  include ./includes/script
+  script.
+    let player = null
+    $(document).ready(function() {
+      $('#myModal').on('hidden.bs.modal',function(e) {
+        if(player&&player.pause) player.pause()
+      })
+      $('.card-img-top').click(function(e) {
+        let videoSrc = $(this).data('video')
+        let imageSrc = $(this).attr('src')
+        console.log(videoSrc)
+        $('#myModal').modal('show')
+        if(!player) {
+          player = new DPlayer({
+            container: document.getElementById('videoModal'),
+            screenshot: true,
+            video: {
+              url: videoSrc,
+              pic: imageSrc,
+              thumbnails: imageSrc
+            }
+          })
+        } else {
+          player.switchVideo({
+            url: videoSrc,
+            pic: imageSrc,
+            thumbnails: imageSrc
+          })
+        }
+      })
+    })

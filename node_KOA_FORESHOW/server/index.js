@@ -1,7 +1,8 @@
 const Koa = require('koa')
-const app = new Koa()
+const cors = require('koa2-cors')
 const views = require('koa-views')
 const {resolve} = require('path')
+const app = new Koa()
 
 app.use(views(resolve(__dirname, './views'), {
   extension: 'pug' // 扩展名为pug的就会识别为模板文件
