@@ -146,7 +146,6 @@ block content
       $('.card-img-top').click(function(e) {
         let videoSrc = $(this).data('video')
         let imageSrc = $(this).attr('src')
-        console.log(videoSrc)
         $('#myModal').modal('show')
         if(!player) {
           player = new DPlayer({
@@ -159,11 +158,13 @@ block content
             }
           })
         } else {
-          player.switchVideo({
-            url: videoSrc,
-            pic: imageSrc,
-            thumbnails: imageSrc
-          })
+          if(player.video.currentSrc !== video) {
+            player.switchVideo({
+              url: videoSrc,
+              pic: imageSrc,
+              thumbnails: imageSrc
+            })
+          } 
         }
       })
     })
