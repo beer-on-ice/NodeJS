@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer')
 
 const base = `https://movie.douban.com/subject/`
-const doubanId = '26739551'
+const doubanId = '26366496'
 const videoBase = `https://movie.douban.com/trailer/219491`
 
 const sleep = time => new Promise(resolve => {
@@ -26,7 +26,7 @@ const sleep = time => new Promise(resolve => {
     let it = $('.related-pic-video')
     if (it && it.length > 0) {
       let link = it.attr('href')
-      let cover = it.css('background-image').replace('url(', '').replace(')', '')
+      let cover = it.css('background-image').replace('url(', '').replace(')', '').replace(/\"/g, '')
       return {
         link,
         cover
