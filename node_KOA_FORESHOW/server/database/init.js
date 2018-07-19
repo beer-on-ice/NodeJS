@@ -29,12 +29,6 @@ exports.connect = () => {
       }
     })
     mongoose.connection.once('open', () => {
-      const Dog = mongoose.model('Dog', {name: String})
-      const doga = new Dog({name: '阿尔法'})
-      doga.save().then(() => {
-        console.log('wang')
-      })
-
       resolve()
       console.log('数据库连接成功')
     })
