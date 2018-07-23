@@ -1,3 +1,4 @@
+// 根据豆瓣电影id拿电影封面图，id，视频-子进程
 const cp = require('child_process')
 const {resolve} = require('path')
 

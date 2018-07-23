@@ -8,6 +8,8 @@
     "start": "node server/index.js"
   },
   "dependencies": {
+    "bcrypt": "^2.0.1",
+    "bcryptjs": "^2.4.3",
     "ejs": "^2.6.1",
     "koa": "^2.5.2",
     "koa-views": "^6.1.4",

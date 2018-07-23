@@ -1,3 +1,4 @@
+// 抓取豆瓣电影列表数据
 const puppeteer = require('puppeteer')
 const url = 'https://movie.douban.com/tag/#/?sort=R&range=6,10&tags='
 const sleep = time => new Promise(resolve => {

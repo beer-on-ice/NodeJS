@@ -1,3 +1,4 @@
+// 根据豆瓣电影id拿电影封面图，id，视频
 const puppeteer = require('puppeteer')
 
 const base = `https://movie.douban.com/subject/`

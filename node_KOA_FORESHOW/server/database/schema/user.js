@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const Schema = mongoose.Schema
 const SALT_WORK_FACTOR = 10 // 加密强度
 const MAX_LOGIN_ATTEMPTS = 5// 最大登录次数
@@ -38,21 +38,21 @@ const userSchema = new Schema({
   }
 })
 
-userSchema.pre('save', next => {
+userSchema.pre('save', function (next) {
   if (this.isNew) {
-    this.meta.createdAt = this.meta.updateAt = Date.now()
+    this.meta.createdAt = this.meta.updatedAt = Date.now()
   } else {
-    this.meta.updateAt = Date.now()
+    this.meta.updatedAt = Date.now()
   }
   next()
 })
 
-userSchema.pre('save', next => {
+userSchema.pre('save', function (next) {
   if (!this.isModified('password')) return next()
 
-  bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
+  bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
     if (err) return next(err)
-    bcrypt.hash(this.password, salt, (error, hash) => {
+    bcrypt.hash(this.password, salt, function (error, hash) {
       if (error) return next(error)
       this.password = hash
       next()
@@ -62,14 +62,14 @@ userSchema.pre('save', next => {
 
 // virtual不会真正存到数据库
 // 锁定时间
-userSchema.virtual('isLocked').get(() => {
+userSchema.virtual('isLocked').get(function () {
   return !!(this.lockUntil && this.lockUntil > Date.now())
 })
 
 userSchema.methods = {
   // 密码比较
-  comparePassword: (_password, password) => {
-    return new Promise((resolve, reject) => {
+  comparePassword: function (_password, password) {
+    return new Promise(function (resolve, reject) {
       bcrypt.compare(_password, password, (err, isMatch) => {
         if (!err) resolve(isMatch)
         else reject(err)
@@ -77,8 +77,8 @@ userSchema.methods = {
     })
   },
   // 判断用户是否尝试登录超过限制次数从而锁定
-  incLoginAttempts: user => {
-    return new Promise((resolve, reject) => {
+  incLoginAttempts: function (user) {
+    return new Promise(function (resolve, reject) {
       // 已被锁定且已到锁定结束时间
       if (this.lockUntil && this.lockUntil < Date.now()) {
         this.update({
