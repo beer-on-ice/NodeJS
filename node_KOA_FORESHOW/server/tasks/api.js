@@ -39,6 +39,7 @@ async function fetchMovie (item) {
       movie.title = movieData.alt_title || movieData.title || ''
       movie.rawTitle = movieData.title || ''
       if (movieData.attrs) {
+        // 处理分类
         movie.movieTypes = movieData.attrs.movie_type || []
         movie.year = movieData.attrs.year[0] || 2500
         for (let i = 0; i < movie.movieTypes.length; i++) {
@@ -46,18 +47,21 @@ async function fetchMovie (item) {
           let cat = await Category.findOne({
             name: item
           })
+          // 没有就创建新分类名
           if (!cat) {
             cat = new Category({
               name: item,
               movies: [movie._id]
             })
           } else {
+            // 有该分类就存入该电影
             if (cat.movies.indexOf(movie._id) === -1) {
               cat.movies.push(movie._id)
             }
           }
 
           await cat.save()
+          // 当前电影的分类里加入该分类ObjectId
 
           if (!movie.category) {
             movie.category.push(cat._id)
@@ -67,6 +71,7 @@ async function fetchMovie (item) {
             }
           }
         }
+        // 日期，地点处理
         let dates = movieData.attrs.pubdate || []
         let pubdates = []
         dates.map(item => {
@@ -85,6 +90,7 @@ async function fetchMovie (item) {
         })
         movie.pubdate = pubdates
       }
+
       tags.forEach(tag => {
         movie.tags.push(tag.name)
       })
