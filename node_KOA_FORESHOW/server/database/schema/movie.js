@@ -3,7 +3,10 @@ const Schema = mongoose.Schema
 const Mixed = Schema.Types.Mixed
 
 const MovieSchmea = new Schema({
-  doubanId: String
+  doubanId: {
+    unique: true,
+    type: String
+  },
   rate: Number,
   title: String,
   summary: String,
@@ -26,11 +29,20 @@ const MovieSchmea = new Schema({
       type: Date,
       default: Date.now()
     },
-    updateAt:{
-      type:Date,
+    updateAt: {
+      type: Date,
       default: Date.now()
     }
   }
 })
 
-mongoose.model('Movie',MovieSchmea)
+MovieSchmea.pre('save', next => {
+  if (this.isNew) {
+    this.meta.createdAt = this.meta.updateAt = Date.now()
+  } else {
+    this.meta.updateAt = Date.now()
+  }
+  next()
+})
+
+mongoose.model('Movie', MovieSchmea)
