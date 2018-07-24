@@ -1,7 +1,9 @@
 const Koa = require('koa')
 const views = require('koa-views')
 const {resolve} = require('path')
+const mongoose = require('mongoose')
 const {connect, initSchemas} = require('./database/init')
+const router = require('./routes/index')
 const app = new Koa()
 
 ;(async () => {
@@ -10,6 +12,8 @@ const app = new Koa()
   // require('./tasks/movie') // 获取电影列表
   require('./tasks/api') // 获取每部电影详情
 })()
+
+app.use(router.routes()).use(router.allowedMethods())
 
 app.use(views(resolve(__dirname, './views'), {
   extension: 'pug' // 扩展名为pug的就会识别为模板文件

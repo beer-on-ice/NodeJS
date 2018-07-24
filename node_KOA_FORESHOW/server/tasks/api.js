@@ -38,6 +38,7 @@ async function fetchMovie (item) {
       movie.summary = movieData.summary || ''
       movie.title = movieData.alt_title || movieData.title || ''
       movie.rawTitle = movieData.title || ''
+
       if (movieData.attrs) {
         // 处理分类
         movie.movieTypes = movieData.attrs.movie_type || []
@@ -61,8 +62,8 @@ async function fetchMovie (item) {
           }
 
           await cat.save()
-          // 当前电影的分类里加入该分类ObjectId
 
+          // 当前电影的分类里加入该分类ObjectId
           if (!movie.category) {
             movie.category.push(cat._id)
           } else {

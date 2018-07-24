@@ -4,6 +4,7 @@ const {resolve} = require('path')
 
 ;(async () => {
   const script = resolve(__dirname, '../crawler/video')
+  // 只有使用fork才可以使用message事件和send()方法
   const child = cp.fork(script, [])
   let invoked = false
 
