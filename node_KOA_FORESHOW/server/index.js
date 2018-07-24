@@ -1,9 +1,8 @@
 const Koa = require('koa')
 const views = require('koa-views')
 const {resolve} = require('path')
-const mongoose = require('mongoose')
 const {connect, initSchemas} = require('./database/init')
-const router = require('./routes/index')
+const router = require('./routes/movie')
 const app = new Koa()
 
 ;(async () => {
