@@ -12,8 +12,6 @@ const app = new Koa()
   require('./tasks/api') // 获取每部电影详情
 })()
 
-app.use(router.routes()).use(router.allowedMethods())
-
 app.use(views(resolve(__dirname, './views'), {
   extension: 'pug' // 扩展名为pug的就会识别为模板文件
 }))
