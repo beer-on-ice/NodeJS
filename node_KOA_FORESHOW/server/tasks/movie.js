@@ -6,7 +6,6 @@ const Movie = mongoose.model('Movie')
 
 ;(async () => {
   const script = resolve(__dirname, '../crawler/trailer-list.js')
-  // 只有使用fork才可以使用message事件和send()方法
   const child = cp.fork(script, [])
   let invoked = false
 
