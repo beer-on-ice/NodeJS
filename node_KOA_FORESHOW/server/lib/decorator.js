@@ -28,12 +28,12 @@ export class Route {
   }
 }
 
-export const normalizePath = path => path.startsWith('/') ? path : `/${path}`
+const normalizePath = path => path.startsWith('/') ? path : `/${path}`
 
-export const router = conf => (target, key, decriptor) => {
+const router = conf => (target, key, decriptor) => {
   conf.path = normalizePath(conf.path)
   routerMap.set({
-    targe: target,
+    target: target,
     ...conf
   }, target[key])
 }
