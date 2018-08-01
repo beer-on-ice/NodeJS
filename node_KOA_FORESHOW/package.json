@@ -5,7 +5,8 @@
   "author": "lijin",
   "license": "MIT",
   "scripts": {
-    "start": "node server/index.js"
+    "dev": "node server/index.js",
+    "start": "SET NODE_ENV=development && node start.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -14,11 +15,11 @@
     "koa-router": "^7.4.0",
     "koa-views": "^6.1.4",
     "koa2-cors": "^2.0.6",
-    "puppeteer": "^1.6.0-next.1532381444032",
     "lodash": "^4.17.10",
     "mongoose": "^5.2.4",
     "nanoid": "^1.1.0",
     "pug": "^2.0.3",
+    "puppeteer": "^1.6.0-next.1532381444032",
     "qiniu": "^7.2.1",
     "ramda": "^0.25.0",
     "request": "^2.87.0",

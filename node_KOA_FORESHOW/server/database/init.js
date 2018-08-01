@@ -5,7 +5,7 @@ mongoose.Promise = global.Promise
 const glob = require('glob')
 
 exports.initSchemas = () => {
-  // 同步获取指定文件夹下（./schema/）的文件（全部.js文件）,返回数组
+  // 同步 获取指定文件夹下（./schema/）的文件（全部.js文件）
   glob.sync(resolve(__dirname, './schema/', '**/*.js')).forEach(require)
 }
 

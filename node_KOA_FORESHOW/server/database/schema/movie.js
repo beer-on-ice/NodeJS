@@ -7,6 +7,7 @@ const movieSchmea = new Schema({
     unique: true,
     type: String
   },
+  // 关联category表
   category: [{
     type: ObjectId,
     ref: 'Category'

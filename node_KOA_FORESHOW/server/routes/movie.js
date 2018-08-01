@@ -27,7 +27,7 @@ export class movieController {
   @get('/:id')
   async getMovieDetail (ctx, next) {
     const id = ctx.params.id
-    const movie = await this.getMovieDetail(id)
+    const movie = await getMovieDetail(id)
     const relativeMovies = await getRelativeMovies(movie)
 
     ctx.body = {

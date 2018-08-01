@@ -5,15 +5,15 @@ const R = require('ramda')
 const MIDDLEWARES = ['router']
 
 const useMiddlewares = (app) => {
-  R.map(
-    R.compose(
-      R.forEachObjIndexed(
-        initWith => initWith(app)
+  R.map( // 数组的每个成员依次执行某个函数
+    R.compose( // 将多个函数合并成一个函数，从右到左执行。
+      R.forEachObjIndexed( // 每个属性依次执行给定函数，给定函数的参数分别是属性值和属性名，返回原对象。
+        initWith => initWith(app) // 将app传进引入的router.js
       ),
-      require,
-      name => resolve(__dirname, `./middlewares/${name}`)
+      require, // 引入并命名为initWith
+      name => resolve(__dirname, `./middlewares/${name}`)// 返回middlewares下router.js
     )
-  )(MIDDLEWARES)
+  )(MIDDLEWARES) // 即函数里 name
 }
 
 ;(async () => {

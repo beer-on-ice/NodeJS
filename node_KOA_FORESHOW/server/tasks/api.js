@@ -18,6 +18,7 @@ async function fetchMovie (item) {
 }
 
 ;(async () => {
+  // 操作在一个数据或者多个表达式并且需要选择至少一个满足条件的表达式
   let movies = await Movie.find({
     $or: [
       {summary: {$exists: false}},
