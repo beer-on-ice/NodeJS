@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const Schema = mongoose.Schema
-const SALT_WORK_FACTOR = 10 // 加密强度
+const SALT_WORK_FACTOR = 10 // 定义加密密码计算强度
 const MAX_LOGIN_ATTEMPTS = 5// 最大登录次数
 const LOCK_TIME = 2 * 60 * 60 * 1000 // 锁定时间
 
@@ -50,6 +50,7 @@ userSchema.pre('save', function (next) {
 userSchema.pre('save', function (next) {
   if (!this.isModified('password')) return next()
 
+  // 使用pre中间件在用户信息存储前进行密码加密
   bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
     if (err) return next(err)
     bcrypt.hash(this.password, salt, function (error, hash) {
@@ -60,8 +61,7 @@ userSchema.pre('save', function (next) {
   })
 })
 
-// virtual不会真正存到数据库
-// 锁定时间
+// virtual不会真正存到数据库 。。 是否仍被锁住
 userSchema.virtual('isLocked').get(function () {
   return !!(this.lockUntil && this.lockUntil > Date.now())
 })

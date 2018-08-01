@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const Movie = mongoose.model('Movie')
 export const getAllMovies = async (type, year) => {
   let query = {}
+  // $in  field只要和array中的任意一个value相同，那么该文档就会被检索出来。
   if (type) {
     query.movieTypes = {
       $in: [type]

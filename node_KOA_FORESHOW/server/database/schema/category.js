@@ -22,9 +22,10 @@ const CategorySchmea = new Schema({
     }
   }
 })
-
+// 每次有变化时修改时间
 CategorySchmea.pre('save', function (next) {
   if (this.isNew) {
+    // 新建
     this.meta.createdAt = this.meta.updatedAt = Date.now()
   } else {
     this.meta.updatedAt = Date.now()
