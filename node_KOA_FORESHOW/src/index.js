@@ -5,8 +5,6 @@ import App from './app'
 
 const rootElement = document.getElementById('app')
 
-render(
-  <BrowserRouter>
-    <App/>
-  </BrowserRouter>, rootElement
-)
+render(<BrowserRouter>
+  <App/>
+</BrowserRouter>, rootElement)

@@ -8,7 +8,8 @@
     "build": "yarn run clean && parcel build src/index.html --no-cache -d dist --public-url /",
     "clean": "rimraf dist",
     "cleanCache": "rimraf .cache",
-    "dev": "yarn run clean && yarn run cleanCache && SET NODE_ENV=development && nodemon ./start.js"
+    "dev": "yarn run clean && yarn run cleanCache && SET NODE_ENV=development && nodemon ./start.js",
+    "start": "yarn run clean && yarn run cleanCache && SET NODE_ENV=development && nodemon ./start.js"
   },
   "dependencies": {
     "antd": "3.0.0",

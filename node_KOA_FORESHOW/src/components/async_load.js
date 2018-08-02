@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 export default (loadComponent, placeholder = '正在加载中') => {
   return class AsyncComponent extends Component {
     unmount = false
-
     constructor () {
       super()
       this.state = {
@@ -12,6 +11,7 @@ export default (loadComponent, placeholder = '正在加载中') => {
     }
 
     componentWillUnmount () {
+      
       this.unmount = true
     }
 
@@ -27,12 +27,8 @@ export default (loadComponent, placeholder = '正在加载中') => {
 
     render () {
       const { Child } = this.state
-
-      return (
-        Child
-          ? <Child {...this.props} />
-          : placeholder
-      )
+      
+      return ( Child ? <Child {...this.props} /> : placeholder )
     }
   }
 }
