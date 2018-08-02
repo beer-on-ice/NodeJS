@@ -5,14 +5,18 @@
   "author": "lijin",
   "license": "MIT",
   "scripts": {
-    "dev": "node server/index.js",
-    "start": "SET NODE_ENV=development && node start.js"
+    "build": "yarn run clean && parcel build src/index.html --no-cache -d dist --public-url /",
+    "clean": "rimraf dist",
+    "cleanCache": "rimraf .cache",
+    "dev": "yarn run clean && yarn run cleanCache && SET NODE_ENV=development && nodemon ./start.js"
   },
   "dependencies": {
+    "antd": "3.0.0",
     "bcryptjs": "^2.4.3",
     "ejs": "^2.6.1",
     "koa": "^2.5.2",
     "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
     "koa-views": "^6.1.4",
     "koa2-cors": "^2.0.6",
     "lodash": "^4.17.10",
@@ -22,10 +26,14 @@
     "puppeteer": "^1.6.0-next.1532381444032",
     "qiniu": "^7.2.1",
     "ramda": "^0.25.0",
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1",
+    "react-router-dom": "^4.2.2",
     "request": "^2.87.0",
     "request-promise-native": "^1.0.5"
   },
   "devDependencies": {
+    "autoprefixer": "^9.0.2",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -37,11 +45,15 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "babel-runtime": "^6.26.0",
+    "cssnext": "^1.8.4",
     "eslint": "^5.1.0",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.8.0",
-    "eslint-plugin-standard": "^3.1.0"
+    "eslint-plugin-standard": "^3.1.0",
+    "node-sass": "^4.9.2",
+    "nodemon": "^1.18.3",
+    "parcel-bundler": "^1.9.7"
   }
 }
