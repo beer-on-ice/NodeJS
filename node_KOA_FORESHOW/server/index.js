@@ -2,7 +2,7 @@ const Koa = require('koa')
 const {resolve} = require('path')
 const {connect, initSchemas} = require('./database/init')
 const R = require('ramda')
-const MIDDLEWARES = ['router']
+const MIDDLEWARES = ['router', 'parcel']
 
 const useMiddlewares = (app) => {
   R.map( // 数组的每个成员依次执行某个函数
