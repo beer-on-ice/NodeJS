@@ -13,7 +13,7 @@ moment.locale('zh-cn')
 
 const TabPane = Tabs.TabPane
 const DPlayer = window.DPlayer
-const site = 'http://video.iblack7.com/'
+const site = 'http://ouzg16u5n.bkt.clouddn.com/'
 
 const callback = (key) => {
   console.log(key)

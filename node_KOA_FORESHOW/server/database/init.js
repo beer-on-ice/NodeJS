@@ -9,6 +9,24 @@ exports.initSchemas = () => {
   glob.sync(resolve(__dirname, './schema/', '**/*.js')).forEach(require)
 }
 
+exports.initAdmin = async () => {
+  const User = mongoose.model('User')
+  let user = await User.findOne({
+    username: 'Lijin'
+  })
+
+  if (!user) {
+    const user = new User({
+      username: 'Lijin',
+      email: '997477295@qq.com',
+      password: '123abc',
+      role: 'admin'
+    })
+
+    await user.save()
+  }
+}
+
 exports.connect = () => {
   let maxConnectTimes = 0
 

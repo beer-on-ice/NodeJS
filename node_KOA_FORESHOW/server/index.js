@@ -1,8 +1,8 @@
 const Koa = require('koa')
 const {resolve} = require('path')
-const {connect, initSchemas} = require('./database/init')
+const { connect, initSchemas, initAdmin } = require('./database/init')
 const R = require('ramda')
-const MIDDLEWARES = ['router', 'parcel']
+const MIDDLEWARES = ['common', 'router', 'parcel']
 
 const useMiddlewares = (app) => {
   R.map( // 数组的每个成员依次执行某个函数
@@ -19,9 +19,11 @@ const useMiddlewares = (app) => {
 ;(async () => {
   await connect()
 
+  // 初始化数据库结构
   initSchemas()
-  // require('./tasks/movie') // 获取电影列表
-  // require('./tasks/api') // 获取每部电影详情
+
+  // 初始化管理员
+  await initAdmin()
 
   const app = new Koa()
 
