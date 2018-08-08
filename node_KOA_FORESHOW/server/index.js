@@ -9,8 +9,8 @@ const app = new Koa()
   initSchemas()
   // require('./tasks/movie') // 获取电影列表
   // require('./tasks/api') // 获取每部电影详情
-  require('./tasks/api') // 获取每部电影详情
-  // require('./tasks/qiniu') // 获取每部电影详情
+  // require('./tasks/trailer') // 获取id,视频等等
+  require('./tasks/qiniu') // 上传七牛云图床
 })()
 
 app.use(views(resolve(__dirname, './views'), {
