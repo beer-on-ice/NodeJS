@@ -1,5 +1,13 @@
 const mongoose = require('mongoose')
 const Movie = mongoose.model('Movie')
+
+export const fineAndRemove = async (id) => {
+  const movie = await Movie.findOne({_id: id})
+  if (movie) {
+    await movie.remove()
+  }
+}
+
 export const getAllMovies = async (type, year) => {
   let query = {}
   // $in  field只要和array中的任意一个value相同，那么该文档就会被检索出来。

@@ -1,7 +1,8 @@
 node_modules/
 dist/
 db/
-doubanDatabase/
+
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
