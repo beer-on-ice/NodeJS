@@ -1,3 +1,6 @@
+import { convertPatternGroupsToTasks } from '../../node_modules/fast-glob/out/managers/tasks'
+import { changeExt } from 'upath'
+
 /**
  * 此部分主要是想通过修饰器将不同路由下的事件处理通过class包装成一个独立的类
  */
@@ -5,6 +8,7 @@ const Router = require('koa-router')
 const {resolve} = require('path') // node模块
 const glob = require('glob') // node模块
 const _ = require('lodash')
+const R = require('ramda')
 
 const symbolPrefix = Symbol('prefix') // 原始数据类型Symbol，表示独一无二的值,可以接受一个字符串作为参数
 const routerMap = new Map()
@@ -83,4 +87,65 @@ export const use = path => router({
 export const all = path => router({
   method: 'all',
   path: path
+})
+
+const changeToArr = R.unless(
+  R.is(isArray),
+  R.of
+)
+
+const decorate = (args, middleware) => {
+  let [target, key, descriptor] = args
+  target[key] = isArray(target[key])
+  target[key].unshift(middleware)
+  return descriptor
+}
+
+const convert = middleware => (...args) => decorate(args, middleware)
+
+export const auth = convert(async (ctx, next) => {
+  if (!ctx.session.user) {
+    return (
+      ctx.body = {
+        success: false,
+        code: 401,
+        err: '登录信息失效，重新登录'
+      }
+    )
+  }
+  await next()
+})
+
+export const admin = roleExpected => convert(async (ctx, next) => {
+  const {role} = ctx.session.user
+
+  if (!role || role !== roleExpected) {
+    return (
+      ctx.body = {
+        success: false,
+        code: 403,
+        err: '你没有权限'
+      }
+    )
+  }
+  await next()
+})
+
+export const required = rules => convert(async (ctx, next) => {
+  let errors = []
+
+  const checkRules = R.forEachObjIndexed(
+    (value, key) => {
+      errors = R.filter(i => !R.has(i, ctx, ctx.request[key]))(value)
+    }
+  )
+  checkRules(rules)
+  if (errors.length) {
+    ctx.body = {
+      success: false,
+      code: 412,
+      err: `${errors.join(',')} is required`
+    }
+  }
+  await next()
 })

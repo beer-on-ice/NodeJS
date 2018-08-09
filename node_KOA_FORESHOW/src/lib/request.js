@@ -11,6 +11,7 @@ const _request = (param = {}, fn = () => {}) => {
     if (code === 401) {
       window.location.href = '/'
       return
+      window.location.href = '/'
     }
     if (success) {
       fn(false)
@@ -19,7 +20,7 @@ const _request = (param = {}, fn = () => {}) => {
     throw err
   }).catch(err => {
     fn(false)
-    message.err(String(err || '网络错误'))
+    message.error(String(err || '网络错误'))
   })
 }
 
