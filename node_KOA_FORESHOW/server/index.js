@@ -1,7 +1,7 @@
 const Koa = require('koa')
 const {resolve} = require('path')
 const { connect, initSchemas, initAdmin } = require('./database/init')
-const R = require('ramda')
+const R = require('ramda') // 函数式编程库
 const MIDDLEWARES = ['common', 'router', 'parcel']
 
 const useMiddlewares = (app) => {
@@ -11,12 +11,13 @@ const useMiddlewares = (app) => {
         initWith => initWith(app) // 将app传进引入的router.js
       ),
       require, // 引入并命名为initWith
-      name => resolve(__dirname, `./middlewares/${name}`)// 返回middlewares下router.js
+      name => resolve(__dirname, `./middlewares/${name}`)// 返回middlewares下文件完整路径
     )
   )(MIDDLEWARES) // 即函数里 name
 }
 
 ;(async () => {
+  // 连接数据库
   await connect()
 
   // 初始化数据库结构
@@ -27,6 +28,7 @@ const useMiddlewares = (app) => {
 
   const app = new Koa()
 
+  // 使用中间件
   await useMiddlewares(app)
 
   app.listen(8088)

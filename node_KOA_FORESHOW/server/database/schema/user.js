@@ -53,8 +53,8 @@ userSchema.pre('save', function (next) {
 })
 
 userSchema.pre('save', function (next) {
+  // 如果没有涉及到密码
   if (!this.isModified('password')) return next()
-
   // 使用pre中间件在用户信息存储前进行密码加密
   bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
     if (err) return next(err)
