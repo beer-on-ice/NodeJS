@@ -39,6 +39,8 @@ export default class Detail extends Component {
       method: 'get',
       url: `/api/v0/movies/${this.state._id}`
     }).then(res => {
+      console.log(res);
+      
       const movie = res.movie
       const relativeMovies = res.relativeMovies
       const video = site + movie.videoKey

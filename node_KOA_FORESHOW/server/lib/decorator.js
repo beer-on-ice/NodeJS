@@ -1,5 +1,4 @@
-import { convertPatternGroupsToTasks } from '../../node_modules/fast-glob/out/managers/tasks'
-import { changeExt } from 'upath'
+import { tmpdir } from 'os'
 
 /**
  * 此部分主要是想通过修饰器将不同路由下的事件处理通过class包装成一个独立的类
@@ -26,7 +25,7 @@ export class Route {
 
     for (let [conf, controller] of routerMap) {
       const controllers = isArray(controller)
-      const prefixPath = conf.target[symbolPrefix]
+      const prefixPath = conf.target[symbolPrefix] // 路由前缀 比如： api/v0/movie
 
       if (prefixPath) prefixPath = normalizePath(prefixPath)
       const routerPath = prefixPath + conf.path // 完整路径
@@ -47,6 +46,7 @@ const normalizePath = path => path.startsWith('/') ? path : `/${path}`
 // conf: get/post等方法传递的参数（如：{method: 'get',path: path}），最终已 {类方法，传递的参数}为键， {原型方法} 为值 生成routerMap
 const router = conf => (target, key, decriptor) => {
   conf.path = normalizePath(conf.path)
+
   routerMap.set({
     target: target,
     ...conf
@@ -56,6 +56,7 @@ const router = conf => (target, key, decriptor) => {
 // 修饰器，给每个（如：movieController）类加上特有的prototype
 export const controller = path => target => {
   target.prototype[symbolPrefix] = path
+  // console.log(target.prototype)
 }
 
 // 修饰器，给每个原型方法（如：getMovies）通过router进行处理
