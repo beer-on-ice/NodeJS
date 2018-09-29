@@ -1,6 +1,12 @@
 const Koa = require('koa')
-const {resolve} = require('path')
-const { connect, initSchemas, initAdmin } = require('./database/init')
+const {
+  resolve
+} = require('path')
+const {
+  connect,
+  initSchemas,
+  initAdmin
+} = require('./database/init')
 const R = require('ramda') // 函数式编程库
 const MIDDLEWARES = ['common', 'router', 'parcel']
 
@@ -20,12 +26,13 @@ const useMiddlewares = (app) => {
       //   let tmp = require(path)
       //   console.log(tmp)
       // },
-      name => resolve(__dirname, `./middlewares/${name}`)// 返回middlewares下文件完整路径
+      name => resolve(__dirname, `./middlewares/${name}`) // 返回middlewares下文件完整路径
     )
   )(MIDDLEWARES) // 即函数里 name
 }
 
-;(async () => {
+;
+(async () => {
   // 连接数据库
   await connect()
 
@@ -40,5 +47,7 @@ const useMiddlewares = (app) => {
   // 使用中间件
   await useMiddlewares(app)
 
-  app.listen(8088)
+  app.listen(8088, () => {
+    console.log('Server start at Port: ', 8088)
+  })
 })()

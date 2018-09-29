@@ -1,5 +1,3 @@
-import { tmpdir } from 'os'
-
 /**
  * 此部分主要是想通过修饰器将不同路由下的事件处理通过class包装成一个独立的类
  */
@@ -53,7 +51,7 @@ const router = conf => (target, key, decriptor) => {
   }, target[key])
 }
 
-// 修饰器，给每个（如：movieController）类加上特有的prototype
+// 修饰器，给每个（如：movieController）类加上特有的prototype,在此类下的都是以此为路径开头的如（/admin/users）
 export const controller = path => target => {
   target.prototype[symbolPrefix] = path
   // console.log(target.prototype)
